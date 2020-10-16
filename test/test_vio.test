@@ -1,0 +1,46 @@
+<launch>
+  <arg name="bag_file" default="$(env XVIO_DATASET_DIR)/circle_high_vel_restamped.bag"/>
+  
+  <node pkg="rosbag" type="play" name="rosbag_player" output="screen" args="$(arg bag_file) --clock" required="true">
+  </node>
+  <!-- Input/output remaps and parameters loading -->
+  <node pkg="x_vio" type="x_vio" name="x_vio" clear_params="true" output="screen">
+    <!-- Inputs /-->
+    <remap from="x_vio/imu" to="/fcu/imu" />
+    <remap from="x_vio/image_raw" to="/camera/image_raw"/>
+    <!--remap from="x_vio/features" to="/x_hat/features"/-->
+
+    <!-- Outputs /-->
+    <!--remap from="/msf_core/tf_image_rate" to="/mavros/vicon_pose/vicon_tf" /-->
+
+    <!-- Parameters /-->
+    <rosparam file="$(find x_vio)/params.yaml"/>
+    <param name="/use_sim_time" value="True" />
+    <param name="init_at_startup" value="True" />
+  </node>
+
+  <test test-name="unit_test_node" pkg="x_vio" type="utest_node" time-limit="240">
+    <param name="tolerance" value="0.4"/>
+    <param name="groundtruth_parent_frame" value="/world"/>
+    <param name="groundtruth_child_frame" value="/Pose_vicon"/>
+    <param name="xvio_topic" value="/x_vio/pose_image_rate"/>
+  </test>
+
+  <!-- Disable compressed image outputs -->
+  <group ns="x_vio/tracker" >
+    <rosparam param="disable_pub_plugins">
+      - 'image_transport/compressed'
+      - 'image_transport/compressedDepth'
+      - 'image_transport/theora'
+    </rosparam>
+  </group> 
+
+  <group ns="x_vio/track_manager" >
+    <rosparam param="disable_pub_plugins">
+      - 'image_transport/compressed'
+      - 'image_transport/compressedDepth'
+      - 'image_transport/theora'
+    </rosparam>
+  </group> 
+
+</launch>

@@ -1,0 +1,36 @@
+<package>
+  <name>x_vio_ros</name>
+  <version>1.0.0</version>
+  <description>Wrapper for Visual-Inertial Odometry with the X framework (xVIO)
+	in ROS.</description>
+  <maintainer email="jeff.h.delaune@jpl.nasa.gov">Jeff Delaune</maintainer>
+  
+  <license>California Institute of Technology</license>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <build_depend>x</build_depend>
+  <build_depend>cv_bridge</build_depend>
+  <build_depend>image_geometry</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>dynamic_reconfigure</build_depend>
+  <build_depend>image_transport</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+  <build_depend>rostest</build_depend>
+
+  <run_depend>x</run_depend>
+  <run_depend>cv_bridge</run_depend>
+  <run_depend>image_geometry</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>tf</run_depend>
+  <run_depend>dynamic_reconfigure</run_depend>
+  <run_depend>image_transport</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>message_runtime</run_depend>
+</package>

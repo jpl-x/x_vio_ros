@@ -1,0 +1,137 @@
+###########################
+# Initial state estimates #
+###########################
+
+## Default initial state: static, level.
+#p:    [0, 0, 0.5] # [x,y,z]
+#v:    [0.0, 0.0, 0.0] # [x,y,z]
+#q:    [1.0, 0.0, 0.0, 0.0] # [w,x,y,z]
+
+## Initial state for myBags/201604026/circle_high_vel.bag at t = 0 s
+p:    [-0.168942875105, -0.573647949818, 1.09445961816] # [x,y,z]
+v:    [0.0, 0.0, 0.0] # [x,y,z]
+q:    [-0.329112656567, -0.0699724433216, 0.0214667765852, 0.941449889249] # [w,x,y,z]
+
+# Initial IMU bias estimates
+b_w: [0.0, 0.0, 0.0] # [x,y,z]
+b_a: [0.0, 0.0, 0.0] # [x,y,z]
+
+###############
+# Calibration #
+###############
+
+# Camera calibration for myBags/20160426 bags
+cam1_fx: 0.46513
+cam1_fy: 0.726246
+cam1_cx: 0.499822
+cam1_cy: 0.458086
+cam1_s:  0.950711
+cam1_img_width: 752
+cam1_img_height: 480
+cam1_q_ic: [-0.004059133072894, 0.928890463133302, 0.370065735566358, -0.014049352983967] # [w,x,y,z]
+cam1_p_ic: [-0.05914814,  0.04309647, -0.03085167] # [x,y,z]
+cam1_time_offset: -0.00397400522578
+
+cam2_fx: 0.46513
+cam2_fy: 0.726246
+cam2_cx: 0.499822
+cam2_cy: 0.458086
+cam2_s:  0.950711
+cam2_img_width: 752
+cam2_img_height: 480
+cam2_q_ic: [-0.004059133072894, 0.928890463133302, 0.370065735566358, -0.014049352983967] # [w,x,y,z]
+cam2_p_ic: [-0.05914814,  0.04309647, -0.03085167] # [x,y,z]
+cam2_time_offset: -0.00397400522578
+
+# Feature noise (normalized coordinate standard deviation)
+sigma_img: 0.02541924711215672 # sqrt(0.00012922762474977756 * 5.0)
+
+#######
+# IMU #
+#######
+
+# MXR9500G/M accels (Astec)
+n_a:  0.0083  # Accel noise spectral density [m/s^2/sqrt(Hz)]
+n_ba: 0.00083 # Accel bias random walk [m/s^3/sqrt(Hz)]
+# ADXRS610 gyros (Astec)
+n_w:  0.0013  # Gyro noise spectral density [rad/s/sqrt(Hz)]
+n_bw: 0.00013 # Gyro bias random walk [rad/s^2/sqrt(Hz)]
+
+#######
+# LRF #
+#######
+
+# Noise (standard deviation in m)
+sigma_range: 0.05
+
+##############
+# Sun Sensor #
+##############
+
+# Currently unused
+q_sc: [1.0, 0.0, 0.0, 0.0] # [w,x,y,z]
+w_s: [0.0, 0.0, 1.0] # [x,y,z]
+
+###########
+# Tracker #
+###########
+
+fast_detection_delta: 20
+non_max_supp: True
+block_half_length: 20
+margin: 20
+n_feat_min: 400
+# RANSAC: 8 / LMEDS: 4 (see OpenCV doc)
+outlier_method: 8
+# Parameter used for RANSAC. It is the maximum distance from a point to an epipolar line in pixels,
+# beyond which the point is considered an outlier and is not used for computing the final fundamental
+# matrix. It can be set to something like 1-3, depending on the accuracy of the point localization,
+# image resolution, and the image noise.
+outlier_param1: 0.3
+# Parameter used for the RANSAC or LMedS methods only. It specifies a desirable level of confidence
+# (probability) that the estimated matrix is correct.
+outlier_param2: 0.99
+# 1 <=> no tiling
+n_tiles_h: 1
+n_tiles_w: 1
+max_feat_per_tile: 10000
+
+##############
+# SLAM-MSCKF #
+##############
+
+# Number of poses in the sliding window
+n_poses_max: 10
+
+# Number of SLAM features
+n_slam_features_max: 15
+
+# Initial inverse depth of SLAM features [1/m]
+# (default: 1 / (2 * d_min) [Montiel, 2006])
+rho_0: 2.5
+
+# Initial standard deviation of SLAM inverse depth [1/m]
+# (default: 1 / (4 * d_min) [Montiel, 2006])
+sigma_rho_0: 1.25
+
+# Number of IEKF iterations (1 <=> EKF)
+iekf_iter: 1
+
+# Minimum baseline to trigger MSCKF measurement (pixels)
+msckf_baseline: 30.0
+
+# Minimum track length for a visual feature to be processed
+min_track_length: 10
+
+########
+# Misc #
+########
+
+# Timeout before 3D trajectory disappears in GUI (s)
+traj_timeout_gui: 3
+
+# flags to play rosbags
+/use_sim_time: True
+
+# Initialize at startup
+init_at_startup: False

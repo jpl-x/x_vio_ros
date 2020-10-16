@@ -1,0 +1,34 @@
+<launch>
+
+  <!-- Input/output remaps and parameters loading -->
+  <node pkg="x_vio_ros" type="x_vio_ros" name="x_vio" clear_params="true" output="screen">
+
+    <!-- Inputs /-->
+    <remap from="x_vio/imu" to="/fcu/imu" />
+    <remap from="x_vio/image_raw" to="/camera/image_raw" />
+    <!--remap from="x_vio/features" to="/features" /-->
+	<remap from="x_vio/range" to="/lrf/range" />
+	<remap from="x_vio/sun_angles" to="/sun_sensor/angles" />
+
+    <!-- Parameters /-->
+    <rosparam file="$(find x_vio_ros)/params.yaml"/>
+    <param name="/use_sim_time" value="True" />
+  </node>
+
+  <!-- Disable compressed image outputs -->
+  <group ns="x_vio/tracker" >
+    <rosparam param="disable_pub_plugins">
+      - 'image_transport/compressed'
+      - 'image_transport/compressedDepth'
+      - 'image_transport/theora'
+    </rosparam>
+  </group>
+  <group ns="x_vio/track_manager" >
+    <rosparam param="disable_pub_plugins">
+      - 'image_transport/compressed'
+      - 'image_transport/compressedDepth'
+      - 'image_transport/theora'
+    </rosparam>
+  </group>
+
+</launch>

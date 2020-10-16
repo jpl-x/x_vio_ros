@@ -1,0 +1,5 @@
+<launch>
+  <group ns="x_vio">
+     <rosparam file="$(find x_vio_ros)/params.yaml"/>
+  </group>
+</launch>

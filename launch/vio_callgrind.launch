@@ -1,0 +1,30 @@
+<launch>
+  
+  <!-- Input/output remaps and parameters loading -->
+  <node pkg="x_vio_ros" type="x_vio_ros" name="x_vio" clear_params="true" output="screen" 
+  	launch-prefix="valgrind --tool=callgrind 
+	--callgrind-out-file=$(find x_vio_ros)/debug/callgrind.out">
+    <remap from="/msf_core/imu_state_input" to="/fcu/imu" />
+    <!--remap from="/msf_core/tf_image_rate" to="/mavros/vicon_pose/vicon_tf" /-->
+    <rosparam file="$(find x_vio)/params.yaml"/>
+    <param name="/use_sim_time" value="True" />
+  </node>
+  
+  <!-- Disable compressed image outputs -->
+  <group ns="x_vio/tracker" >
+    <rosparam param="disable_pub_plugins">
+      - 'image_transport/compressed'
+      - 'image_transport/compressedDepth'
+      - 'image_transport/theora'
+    </rosparam>
+  </group> 
+
+  <group ns="x_vio/track_manager" >
+    <rosparam param="disable_pub_plugins">
+      - 'image_transport/compressed'
+      - 'image_transport/compressedDepth'
+      - 'image_transport/theora'
+    </rosparam>
+  </group> 
+
+</launch>
