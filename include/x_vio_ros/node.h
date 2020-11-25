@@ -135,6 +135,6 @@ private:
       geometry_msgs::PoseWithCovariance::_covariance_type& cov_ros) const;
 #endif
 };
-}  // end namespace x
+} // end namespace x
 
 #endif  // NODE_H_
