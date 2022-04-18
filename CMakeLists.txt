@@ -43,7 +43,6 @@ if(NOT ${OpenCV_FOUND})
 endif()
 
 find_package(catkin REQUIRED COMPONENTS
-  x 
   cv_bridge
   image_geometry
   dynamic_reconfigure
@@ -54,6 +53,8 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
 )
+
+find_package(x REQUIRED)
 
 # Set build flags, depending on the architecture
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
@@ -89,6 +90,7 @@ include_directories (
   include
   ${OpenCV_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
+  ${x_LIB_DIR}
 )
 
 # ROS node executable
@@ -107,6 +109,7 @@ add_dependencies(x_vio_ros ${PROJECT_NAME}_gencfg)
 target_link_libraries(x_vio_ros
   ${OpenCV_LIBRARIES}
   ${catkin_LIBRARIES}
+  ${x_LIBS}
 )
 
 # Testing
