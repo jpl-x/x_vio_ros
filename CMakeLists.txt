@@ -54,7 +54,6 @@ find_package(catkin REQUIRED COMPONENTS
         std_msgs
         )
 
-set(x_DIR /home/viciopoli/JPL/devel/ros2_ws/src/x/install/lib/cmake/x)
 find_package(x REQUIRED)
 
 # Set build flags, depending on the architecture
@@ -121,5 +120,6 @@ if(CATKIN_ENABLE_TESTING)
   target_link_libraries(utest_node
           ${OpenCV_LIBRARIES}
           ${catkin_LIBRARIES}
-          ${rostest_LIBRARIES})
+          ${rostest_LIBRARIES}
+          ${x_LIBRARIES})
 endif()
