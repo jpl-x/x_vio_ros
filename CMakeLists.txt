@@ -2,11 +2,11 @@
 # User build settings
 
 set(DUAL_THREAD true) # Set true to process image and inertial data on different
-		      # threads
+# threads
 set(VERBOSE true) # Set false to disable all publishing and standard output
-				  # stream, except pose at update rate. That will improve runtime.
+# stream, except pose at update rate. That will improve runtime.
 set(PROFILING false)  # Set true to disable compiler flags which are not
-		      # compatible with Callgrind profiling tool.
+# compatible with Callgrind profiling tool.
 set(UNIT_TESTS false) # Set true to enable unit tests
 
 ################################################################################ 
@@ -43,17 +43,18 @@ if(NOT ${OpenCV_FOUND})
 endif()
 
 find_package(catkin REQUIRED COMPONENTS
-  cv_bridge
-  image_geometry
-  dynamic_reconfigure
-  image_transport
-  roscpp
-  tf
-  message_generation
-  sensor_msgs
-  std_msgs
-)
+        cv_bridge
+        image_geometry
+        dynamic_reconfigure
+        image_transport
+        roscpp
+        tf
+        message_generation
+        sensor_msgs
+        std_msgs
+        )
 
+set(x_DIR /home/viciopoli/JPL/devel/ros2_ws/src/x/install/lib/cmake/x)
 find_package(x REQUIRED)
 
 # Set build flags, depending on the architecture
@@ -67,8 +68,8 @@ if (CMAKE_BUILD_TYPE MATCHES Release)
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
   if(CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch64") # tested on Jetson TX2
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=armv8-a+crypto -mcpu=cortex-a57+crypto -flto -ffast-math -fvect-cost-model=unlimited")
-  #elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch32") # uncomment with correct check for Snapdragon Flight Pro
-  #  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=softfp -flto -ffast-math -fvect-cost-model=unlimited")
+    #elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "aarch32") # uncomment with correct check for Snapdragon Flight Pro
+    #  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=softfp -flto -ffast-math -fvect-cost-model=unlimited")
   endif()
 
   if (${PROFILING} MATCHES false)
@@ -78,27 +79,27 @@ endif()
 
 # Configure this package
 generate_dynamic_reconfigure_options(
-  cfg/xvio.cfg
+        cfg/xvio.cfg
 )
 
 catkin_package(
-  INCLUDE_DIRS include
-  CATKIN_DEPENDS dynamic_reconfigure
+        INCLUDE_DIRS include
+        CATKIN_DEPENDS dynamic_reconfigure
 )
 
 include_directories (
-  include
-  ${OpenCV_INCLUDE_DIRS}
-  ${catkin_INCLUDE_DIRS}
-  ${x_LIB_DIR}
+        include
+        ${OpenCV_INCLUDE_DIRS}
+        ${catkin_INCLUDE_DIRS}
+        ${x_INCLUDE_DIRS}
 )
 
 # ROS node executable
 #####################
 set (SOURCE
-  src/x_vio_ros/node.cpp
-  src/x_vio_ros/main.cpp
-)
+        src/x_vio_ros/node.cpp
+        src/x_vio_ros/main.cpp
+        )
 
 add_executable (x_vio_ros ${SOURCE})
 
@@ -107,10 +108,10 @@ add_dependencies(x_vio_ros ${PROJECT_NAME}_gencfg)
 
 # Additional libraries to link against
 target_link_libraries(x_vio_ros
-  ${OpenCV_LIBRARIES}
-  ${catkin_LIBRARIES}
-  ${x_LIBS}
-)
+        ${OpenCV_LIBRARIES}
+        ${catkin_LIBRARIES}
+        ${x_LIBRARIES}
+        )
 
 # Testing
 #########
@@ -118,7 +119,7 @@ if(CATKIN_ENABLE_TESTING)
   find_package(rostest REQUIRED)
   add_rostest_gtest(utest_node test/test_vio.test test/utest.cpp)
   target_link_libraries(utest_node
-    ${OpenCV_LIBRARIES}
-    ${catkin_LIBRARIES}
-    ${rostest_LIBRARIES})
+          ${OpenCV_LIBRARIES}
+          ${catkin_LIBRARIES}
+          ${rostest_LIBRARIES})
 endif()
